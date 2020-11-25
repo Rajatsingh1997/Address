@@ -42,6 +42,7 @@ export default function DraggableDialog({
             Street:-{data?.location?.street?.number+' '+data?.location?.street?.name}<br/>
             City:- {data?.location?.city}<br/>
             State:-{data?.location?.state}<br/>
+            Country:-{data?.location?.country}<br/>
             Postcode:-{data?.location?.postcode}<br/>
             Phone:-{data?.phone}<br/>
             Cell:-{data?.cell}<br/>

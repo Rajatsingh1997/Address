@@ -1,12 +1,17 @@
-import './App.css';
-import Srchbox from './Components/Srchbox';
-import Info from './Components/Info';
-
+import "./App.css";
+import Home from "./Components/Home";
+import Info from "./Components/Info";
+import { HashRouter, Route, Switch } from "react-router-dom";
 function App() {
   return (
     <div>
-      <Srchbox/>  
-      <Info/>   
+      <HashRouter>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/info/:country" component={Info} />
+
+        </Switch>
+      </HashRouter>
     </div>
   );
 }

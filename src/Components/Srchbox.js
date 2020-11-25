@@ -1,4 +1,4 @@
-import React from "react";
+import React  from "react";
 import {
   Navbar,
   Nav,
@@ -9,11 +9,12 @@ import {
 } from "react-bootstrap";
 import "./Srchbox.css";
 
-function Srchbox() {
+function Srchbox(props) {
+ 
   return (
     <>
     <div className="top">
-    <h2 className="header">ADDRESS BOOK</h2>
+       <h2 className="header">ADDRESS BOOK</h2>
     </div>
     <div className='first'>
       <Navbar bg="dark" expand="lg" className="Navbr">
@@ -25,8 +26,9 @@ function Srchbox() {
               type="text"
               placeholder="Search for users details"
               className="mr-sm-2"
+              onChange={(e)=> props.setSearch(e.target.value)}
             />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-success" disabled={true}>Search</Button>
           </Form>
         </Navbar.Collapse>
       </Navbar>
