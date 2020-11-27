@@ -2,30 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersRequest } from "../redux/action/actions";
 import PaperComponent from "./Usermodal";
-import { Table, Spinner,Button} from "react-bootstrap";
-import  Pagination from "./Pagination";
-import Srchbox from './Srchbox';
+import { Table, Spinner, Button } from "react-bootstrap";
+import Pagination from "./Pagination";
+import Srchbox from "./Srchbox";
 import "./Info.css";
-
 
 function Info(props) {
   //for modal
 
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({});
-  
-  // for pagination 
-  const [showPerPage,setShowPerPage]=useState(9);
-  const [pagination, setPagination]= useState({
-    start:0,
-    end:showPerPage
-  })
-   // for Search
 
-  const [ search, setSearch ] = useState("");
-  const [ find, setFind ] =useState([])
-  const [arr,setArr]=useState([]);
- 
+  // for pagination
+  const [showPerPage, setShowPerPage] = useState(9);
+  const [pagination, setPagination] = useState({
+    start: 0,
+    end: showPerPage,
+  });
+  // for Search
+
+  const [search, setSearch] = useState("");
+  const [find, setFind] = useState([]);
+  const [arr, setArr] = useState([]);
+  const [nine,setNine] =useState([]);
+
   //for API response
 
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ function Info(props) {
     (state) =>
       state.inforeducer &&
       state.inforeducer.result &&
-      state.inforeducer.result.results
+      state.inforeducer.result.results||[]
   );
 
   //This is for Loader
@@ -43,6 +43,21 @@ function Info(props) {
   useEffect(() => {
     dispatch(getUsersRequest());
   }, []);
+
+// useEffect(()=>{
+// const newData=[...state];
+// const newDtatat=newData?.slice(pagination.start, pagination.end)
+
+// const nnnnn=newDtatat?.filter((state) => {
+//   return (
+//     state.name.title.toLowerCase().indexOf(search.toLowerCase()) !== -1||
+//     state.name.first.toLowerCase().indexOf(search.toLowerCase()) !== -1||
+//     state.name.last.toLowerCase().indexOf(search.toLowerCase()) !== -1
+//   );
+// });
+// console.log(nnnnn,'GGGGGGG')
+// setFind(nnnnn);
+// },[search])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -56,42 +71,50 @@ function Info(props) {
     setData(val);
     handleClickOpen();
   };
-  const onPaginationchange=(start,end)=>{
-    setPagination({start:start,end:end})
-  }
+  const onPaginationchange = (start, end) => {
+    setPagination({ start: start, end: end });
+  };
 
-  useEffect(()=>{
-    const take = state?.filter((state)=>{
-      return(
-        state.name.title.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
-        state.name.first.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+  useEffect(() => {
+    const take = state?.filter((state) => {
+      return (
+        state.name.title.toLowerCase().indexOf(search.toLowerCase()) !== -1||
+        state.name.first.toLowerCase().indexOf(search.toLowerCase()) !== -1||
         state.name.last.toLowerCase().indexOf(search.toLowerCase()) !== -1
-      )
-    })
-    setFind(take)
-    console.log(search,"ooooo")
-  },[search])
+      );
+    });
+    setFind(take);
+
+    console.log(search, "ooooo");
+  }, [search]);
+
+  console.log(nine,"oooooooooo")
 
   useEffect(() => {
     const countryName = props.match?.params?.country;
     const filteredCountry = state?.filter(
       (allstate) => allstate?.location.country === countryName
     );
-   console.log(props.match.params, "ooo");
+    console.log(props.match.params, "ooo");
     setFind(filteredCountry);
     setArr(filteredCountry);
-  }, [state]);
+  }, [state, props.match?.params?.country]);
 
- console.log(find,"llllll")
+  useEffect(() => {
+  
+  }, [props.match?.params?.country]);
+
+  console.log(state,"llllll");
   return (
     <div>
-      <Srchbox setSearch={setSearch}/> 
+      <Srchbox setSearch={setSearch} />
       <PaperComponent
         open={open}
         state={state && state}
         handleClose={handleClose}
         data={data && data}
       />
+    
       <div className="Box">
         {loader.isloading ? (
           <Spinner animation="border" />
@@ -107,7 +130,7 @@ function Info(props) {
                 <th>Action</th>
               </tr>
             </thead>
-            {find?.slice(pagination.start,pagination.end)?.map((val) => {
+            {find?.slice(pagination.start, pagination.end)?.map((val) => {
               return (
                 <>
                   <tbody>
@@ -131,11 +154,11 @@ function Info(props) {
               );
             })}
           </Table>
-         
         )}
         <Pagination
-        showPerPage={showPerPage}
-        onPaginationchange={onPaginationchange}
+          showPerPage={showPerPage}
+          seaching={search}
+          onPaginationchange={onPaginationchange}
         />
       </div>
     </div>
